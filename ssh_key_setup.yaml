@@ -1,0 +1,48 @@
+---
+- name: Setup SSH Key for 1global User
+  hosts: all
+  become: yes
+  vars:
+    repo_url: "<your-git-repo-url>"
+    user_name: "1global"
+    ssh_key_dir: "/tmp/ssh-key"
+    user_home: "/home/{{ user_name }}"
+    ssh_dir: "{{ user_home }}/.ssh"
+
+  tasks:
+    - name: Ensure the user exists
+      user:
+        name: "{{ user_name }}"
+        state: present
+        create_home: yes
+        shell: /bin/bash
+
+    - name: Clone the repository
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ ssh_key_dir }}"
+        version: main
+      become: no
+
+    - name: Ensure .ssh directory exists
+      file:
+        path: "{{ ssh_dir }}"
+        state: directory
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: '0700'
+
+    - name: Copy SSH keys to 1global's .ssh directory
+      copy:
+        src: "{{ ssh_key_dir }}/"
+        dest: "{{ ssh_dir }}/"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: '0600'
+        remote_src: yes
+
+    - name: Remove the temporary ssh-key directory
+      file:
+        path: "{{ ssh_key_dir }}"
+        state: absent
+
