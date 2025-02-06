@@ -77,25 +77,4 @@ resource "vsphere_virtual_machine" "vms" {
       ipv4_gateway = "10.150.190.254"
     }
   }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo useradd -m -s /bin/bash 1Global",
-      "sudo mkdir -p /home/1Global/.ssh",
-      "sudo echo 'nameserver 10.255.9.255' > /etc/resolv.conf",
-      "sudo apt-get update -y && sudo apt-get install -y git",
-      "#git clone https://your-git-repo-url.git /tmp/ssh-keys",
-      "#sudo cp /tmp/ssh-keys/id_rsa.pub /home/1Global/.ssh/authorized_keys",
-      "#sudo chown -R 1Global:1Global /home/1Global/.ssh",
-      "#sudo chmod 700 /home/1Global/.ssh",
-      "#sudo chmod 600 /home/1Global/.ssh/authorized_keys"
-    ]
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = file("~/.ssh/id_rsa")
-      host        = "10.150.190.${count.index + 190}"
-    }
-  }
 }
