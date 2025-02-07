@@ -15,19 +15,25 @@ vm2-app 10.150.190.191/24
 vm3-db 10.150.190.192/24
 
 Steps
-on the shel run
+on the shell run
 1) sudo terraform init
 2) sudo terraform plan
 3) sudo terraform deploy
-4) after a sucessful deploy it+s time to laod the ssh pub keys
-   The pub keys are load on a git repo
-5) run ansible-playbook -i inventory.yaml ssh_key_setup.yaml
-6) now we can configure the servers running the following
-7) NGINX - ansible-playbook -i inventory.yaml nginx.yaml
-8) APP - ansible-playbook -i inventory.yaml rest_api.yaml
-9) MYSQL - ansible-playbook -i inventory.yaml mysql.yaml (it's going to fail because of an issue with the db access user creation)
+ 
+After a sucessful deploy it+s time to laod the ssh pub keys
+   The pub keys are load on a git repo. Now run the following palybooks.
+   The inventory file contains the information on the servers that ansible will need to connect.
+   
+1) ansible-playbook -i inventory.yaml ssh_key_setup.yaml
+2) ansible-playbook -i inventory.yaml nginx.yaml
+3) ansible-playbook -i inventory.yaml rest_api.yaml
+4) ansible-playbook -i inventory.yaml mysql.yaml (it's going to fail because of an issue with the db access user creation)
 
 After all the deploy are done you can access the reverse proxy to check if the rest app is responding
 curl -I http://10.150.190.190
+
+There is a long way to walk and there is a huge space to improve.
+
+Thank you for the opportunity.
 
    
