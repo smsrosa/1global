@@ -11,6 +11,12 @@
         state: present
         update_cache: yes
 
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: yes
+
     - name: Install PyMySQL
       pip:
         name: pymysql
@@ -36,12 +42,10 @@
         priv: "*.*:ALL"
         host: "%"
         state: present
-        login_user: ubuntu
-        login_password: "pass"
+        login_user: root
 
   handlers:
     - name: Restart MySQL
       service:
         name: mysql
         state: restarted
-
