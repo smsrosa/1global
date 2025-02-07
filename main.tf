@@ -1,6 +1,6 @@
 provider "vsphere" {
   user           = "smrosa@vsphere.lab"
-  password       = "2L84aD8!"
+  password       = "NOT_MY_PASSWORD"
   vsphere_server = "vaepvwvc001.lab.local"
 
   allow_unverified_ssl = true
