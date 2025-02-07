@@ -4,7 +4,7 @@ Deploy Infra 4 1Global
 Steps to deploy a three vm infrtastrucutre on a vmware cluster:
 - 1 server running nginx to proxy traffic from the port 80 to aanother server on port 5000
 - 1 server running a simple rest application "Hello World" on port 5000
-- 1 server running and also deploy a third server running mysql.
+- 1 server running and also deploy a third server running mysql. __(FAILED to create user on DB)__
 
 A Ubuntu template was previously create only with an user account, ubuntu
 
