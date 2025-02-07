@@ -1,5 +1,5 @@
 ---
-- name: Deploy Simple RESTful Flask Application with MySQL Connection
+- name: RESTful APP
   hosts: vm2
   become: yes
   remote_user: ubuntu
@@ -27,33 +27,12 @@
       copy:
         content: |
           from flask import Flask, jsonify
-          import mysql.connector
 
           app = Flask(__name__)
-
-          def get_db_connection():
-              try:
-                  conn = mysql.connector.connect(
-                      host="10.150.190.192",
-                      user="username",
-                      password="password",
-                      database="name"
-                  )
-                  conn.close()
-                  return True
-              except mysql.connector.Error:
-                  return False
 
           @app.route("/", methods=["GET"])
           def home():
               return jsonify({"message": "Hello World"})
-
-          @app.route("/db", methods=["GET"])
-          def check_db():
-              if get_db_connection():
-                  return jsonify({"message": "Connection OK"})
-              else:
-                  return jsonify({"message": "Connection Failed"}), 500
 
           if __name__ == "__main__":
               app.run(host="0.0.0.0", port=5000)
@@ -65,7 +44,7 @@
     - name: Create virtual environment and install dependencies
       shell: |
         python3 -m venv /opt/flask_app/venv
-        /opt/flask_app/venv/bin/pip install flask mysql-connector-python
+        /opt/flask_app/venv/bin/pip install flask
       args:
         creates: /opt/flask_app/venv
 
