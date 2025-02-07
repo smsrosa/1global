@@ -1,5 +1,5 @@
 ---
-- name: Deploy MySQL Server on Ubuntu
+- name: mysql server
   hosts: vm3
   become: yes
   remote_user: ubuntu
