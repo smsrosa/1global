@@ -1,0 +1,47 @@
+---
+- name: Deploy MySQL Server on Ubuntu
+  hosts: vm3
+  become: yes
+  remote_user: ubuntu
+
+  tasks:
+    - name: Install MySQL Server
+      apt:
+        name: mysql-server
+        state: present
+        update_cache: yes
+
+    - name: Install PyMySQL
+      pip:
+        name: pymysql
+        state: present
+
+    - name: Start and Enable MySQL Service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Allow Remote Connections (Update my.cnf)
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^bind-address'
+        line: 'bind-address = 0.0.0.0'
+      notify: Restart MySQL
+
+    - name: Create MySQL User for Remote Access
+      mysql_user:
+        name: ubuser
+        password: ubuser
+        priv: "*.*:ALL"
+        host: "%"
+        state: present
+        login_user: ubuntu
+        login_password: "pass"
+
+  handlers:
+    - name: Restart MySQL
+      service:
+        name: mysql
+        state: restarted
+
